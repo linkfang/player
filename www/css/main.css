@@ -1,0 +1,264 @@
+html{
+    font-family: sans-serif, Arial, Helvetica;
+}
+
+body{
+    margin: 0;
+    background-color: hsla(180deg, 0%, 98%, 1.0);
+}
+
+.appTitle{
+    width: 100%;
+    position: fixed;
+    transform: translateZ(0);
+    display: flex;
+    flex-direction: column;
+    background-color: hsla(180deg, 0%, 92%, 1.0);
+    box-shadow: 1px 1px 20px hsla(180deg, 0%, 0%, 0.2);
+}
+
+.iconTitle{
+    margin: 0 auto;
+    padding: 0.5rem 0;
+    width: 45px;
+    /* display: none; */
+}
+
+.homePage{
+    background-color: hsla(180deg, 0%, 98%, 1.0);
+    padding-top: 4.5rem;
+    display: grid;
+    padding-bottom: 4.5rem;
+}
+
+.fileList{
+    margin: 0.75rem 1.25rem;
+    float: none;
+}
+
+.albumCover{
+    margin: 0 1rem 0 0;
+    width: 70px;
+    float: left;
+}
+
+.songInfo{
+    font-style: normal;
+    margin: 0.4rem 0 0 0;
+    padding: 0.25rem;
+    display: block;
+    color: hsla(180deg, 0%, 15%, 1.0);
+}
+
+.songArtist{
+    color: hsla(180deg, 0%, 65%, 1.0);
+}
+
+footer{
+    height: 61px;
+    width: 100%;
+    z-index: 900;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: hsla(180deg, 0%, 92%, 1.0);
+    box-shadow: 1px 1px 20px hsla(180deg, 0%, 0%, 0.2);
+    position: fixed;
+    bottom: 0;
+}
+
+.footerHide{
+    transform: translateY(15vh);
+    transition: all 0.25s ease-in;
+}
+
+.arrowUp{
+    z-index: 1000;
+    position: fixed;
+    bottom: 1.25rem;
+    padding-left: 6vw;
+    font-size: 1.3rem;
+    color: #A52F38;
+    /* transform: scale(1) rotate(0deg) translateY(0%) translateX(0%); */
+}
+
+.arrowUpHide{
+    transform: translateY(10vh);
+    transition: all 0.25s ease-in;
+}
+
+.arrowDown{
+    color: #A52F38;
+    z-index: 200;
+    position: absolute;
+    transform: scale(1.4) rotate(180deg) translateX(-3vw) translateY(2vh);
+    filter: drop-shadow(10px 20px 20px hsla(180deg, 0%, 0%, 1));
+}
+
+.arrowDownShow{
+    transform: scale(1.4) rotate(180deg) translateX(-3vw) translateY(-1.5vh);
+    transition: all 0.35s ease-out;
+}
+
+.footTitle{
+    padding: 0 20vw;
+    font-size: 0.9rem;
+    font-style: normal;
+    color: hsla(180deg, 0%, 12%, 1.0);
+}
+
+.playBtn{
+    font-size: 1.1rem;
+    color: #A52F38;
+    padding-left: 3px;
+}
+
+.playCtn{
+    margin: 0 1.5rem;
+    color: #A52F38;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #A52F38;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide{
+    position: fixed;
+    transform: translateY(80%);
+    transition: all 0.35s ease-out;
+}
+
+
+
+/**************  Play Page  **************/
+
+
+
+.playPage{
+    position: fixed;
+    transform: translateY(100%);
+    transition: all 0.35 ease-out;
+}
+
+.playPageUp{
+    position: fixed;
+    transform: translateY(0%);
+    transition: all 0.35s ease-out;
+}
+
+.PCBCtn{
+    position: absolute;
+    height: 62vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.coverCtn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 62vh;
+}
+
+.playCoverBkg{
+    filter: blur(0rem); 
+    /* filter function is refered in MDN, https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur */
+    opacity: 0.9;
+    width: 150%;
+}
+
+.playCoverBkgBlur{
+    filter: blur(1rem);
+    transition: all 1s ease-out;
+}
+
+.playCover{
+    z-index: 900;
+    width: 75%;
+    box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0);
+    opacity: 0.7;
+    transform: scale(0.8);
+    transition: all 0.85s ease-out;
+}
+
+.PCShow{
+    box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0.8);
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.85s ease-out;
+}
+
+.playInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-top: 2vh;
+    filter: blur(0.3rem);
+}
+
+.playInfoShow{
+    filter: blur(0rem);
+    transition: all 0.85s ease-out;
+}
+
+.playSongTitle{
+    margin: 4vh 0 0 0;
+    color: hsla(180deg, 0%, 12%, 1.0);
+}
+
+.playSongArtist{
+    margin: 1.5vh 0 3vh 0;
+    color: hsla(180deg, 0%, 65%, 1.0);
+}
+
+.barCtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2.5vh;
+}
+
+.bar{
+    height: 3px;
+    width: 76vw;
+    background-color:hsla(180deg, 0%, 85%, 1.0);
+    
+}
+
+.playedBar{
+    width: 20%;
+    height: 3px;
+    background-color: #A52F38;
+}
+
+.controlBar{
+    color: #A52F38;
+    position: fixed;
+    bottom: 0.8rem;
+    right: 0vw;
+    z-index: 1000;
+    /* transform: translateX(-35vw) translateY(-4.5vh) scale(1.5); */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.controlBarShow{
+    transform: translateX(-35vw) translateY(-4.6vh) scale(1.5);
+    transition: all 0.5s ease-out;
+}
+
+.disapear{
+    display: none;
+}
