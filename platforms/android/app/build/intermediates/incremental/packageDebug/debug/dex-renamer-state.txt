@@ -1,0 +1,4 @@
+#Wed Feb 13 16:00:46 EST 2019
+base.0=/Users/linkfang/Documents/code/MAD9022/Cordova Project 2/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex

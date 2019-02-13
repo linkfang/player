@@ -5,70 +5,115 @@ let app = {
             title: "Something Just Like This",
             artist: "Alex Goot",
             file: "file:///android_asset/www/media/Something_Just_Like_This-Alex_Goot.mp3",
-            img: "/www/img/Something Just Like This.png"
+            img: "img/Something Just Like This.png"
         },
         {
             id: 2,
             title: "And Then You",
             artist: "Greg Laswell",
             file: "file:///android_asset/www/media/And_Then_You-Greg_Laswell.mp3",
-            img: "/www/img/And Then You.png"
+            img: "img/And Then You.png"
         },
         {
             id: 3,
             title: "Thunder",
             artist: "Imagine Dragons",
             file: "file:///android_asset/www/media/Thunder-Imagine_Dragons.mp3",
-            img: "/www/img/Thunder.png"
+            img: "img/Thunder.png"
         },
         {
             id: 4,
             title: "Smile Like You Used To",
             artist: "Tim Walker",
             file: "file:///android_asset/www/media/Smile_Like_You_Used_To-Tim_Walker.mp3",
-            img: "/www/img/Smile like you used to.png"
+            img: "img/Smile like you used to.png"
         },
         {
             id: 5,
             title: "Attention",
             artist: "Charlie Puth",
             file: "file:///android_asset/www/media/Attention-Charlie_Puth.mp3",
-            img: "/www/img/Attention.png"
+            img: "img/Attention.png"
         },
         {
             id: 6,
             title: "Magic Leaf",
             artist: "Monkey Majik",
             file: "file:///android_asset/www/media/Magic_Leaf(魔法の言葉)-MONKEY_MAJIK.mp3",
-            img: "/www/img/Magic Leaf.png"
+            img: "img/Magic Leaf.png"
         },
         {
             id: 7,
             title: "There For You",
             artist: "Martin Garrix",
             file: "file:///android_asset/www/media/There_For_You-Martin_Garrix.mp3",
-            img: "/www/img/There For You.png"
+            img: "img/There For You.png"
         },
         {
             id: 8,
             title: "Stay Together",
             artist: "Noah Cyrus",
             file: "file:///android_asset/www/media/There_For_You-Martin_Garrix.mp3",
-            img: "/www/img/Stay Together.png"
+            img: "img/Stay Together.png"
         }
     ],
+
+    media: null,
+
+    status:{
+        '0': 'MEDIA_NONE',
+        '1': 'MEDIA_STARTING',
+        '2': 'MEDIA_RUNNING',
+        '3': 'MEDIA_PAUSED',
+        '4': 'MEDIA_STOPPED'
+    },
+
+    err:{
+        '1': 'MEDIA_ERR_ABORTED',
+        '2': 'MEDIA_ERR_NETWORK',
+        '3': 'MEDIA_ERR_DECODE',
+        '4': 'MEDIA_ERR_NONE_SUPPORTED'
+    },
+
     init: function () {
         app.createHomePage();
         app.randomAddDetails();
         document.querySelector(".playCtn").addEventListener("click", app.showPlay);
+        document.querySelector(".playCtn").addEventListener("click", app.play);
         document.querySelector(".arrowUp").addEventListener("click", app.showPlay);
         document.querySelector(".arrowDown").addEventListener("click", app.hidePlay);
         document.querySelector(".nextSong").addEventListener("click", app.nextSong);
         document.querySelector(".lastSong").addEventListener("click", app.lastSong);
+        document.querySelector(".playCtn").addEventListener("click", app.togglePlayAndPause);
+        app.ready();
+    },
+
+    ready: function(){
+        let songId = document.querySelector(".playInfo").getAttribute("data-id");
+        let i = app.appData.findIndex( item => item.id == songId);
+        let src = app.appData[i].file;
+        console.log(src);
+        // app.media = new Media(src, app.scf, app.ecf, app.statusChange);
+        app.media = new Media(src, app.scf, app.ecf);
+    },
+
+    scf: function(){
+        console.log("Played successfully!");
+    },
+
+    ecf: function(err){
+        console.error("err");
+    },
+
+    statusChange: function (status){
+        console.log("Status is now " + app.status[status] );
+    },
+
+    play: function(){
+        app.media.play();
     },
 
     showPlay: function () {
-        console.log("working!!!!!!!!!");
         document.querySelector(".homePage").classList.add("hide");
         document.querySelector(".appTitle").classList.add("hide");
         document.querySelector(".footer").classList.add("footerHide");
@@ -82,7 +127,9 @@ let app = {
         document.querySelector(".lastSong").classList.remove("disapear");
         document.querySelector(".nextSong").classList.remove("disapear");
         setTimeout(() => {
-            document.querySelector(".arrowDown").classList.add("arrowDownShow")
+            document.querySelector(".arrowDown").classList.add("arrowDownShow");
+            document.querySelector(".fa-volume-up").classList.add("volumeUpShow");
+            document.querySelector(".fa-volume-down").classList.add("volumeDownShow");
         }, 750);
     },
 
@@ -101,7 +148,9 @@ let app = {
         document.querySelector(".controlBar").classList.remove("controlBarShow");
 
         setTimeout(() => {
-            document.querySelector(".arrowDown").classList.remove("arrowDownShow")
+            document.querySelector(".arrowDown").classList.remove("arrowDownShow");
+            document.querySelector(".fa-volume-up").classList.remove("volumeUpShow");
+            document.querySelector(".fa-volume-down").classList.remove("volumeDownShow");
         }, 750);
     },
 
@@ -158,8 +207,14 @@ let app = {
         document.querySelector(".playCover").src = app.appData[i].img;
         document.querySelector(".playSongTitle").textContent = app.appData[i].title;
         document.querySelector(".playSongArtist").textContent = app.appData[i].artist;
+        document.querySelector(".footTitle").textContent = app.appData[i].title;
 
         app.showPlay();
+    },
+
+    togglePlayAndPause: function(){
+        document.querySelector(".playBtn").classList.toggle("fa-play");
+        document.querySelector(".playBtn").classList.toggle("fa-pause");
     },
 
     switchSongInfo: function () {
