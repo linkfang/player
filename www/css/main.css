@@ -8,8 +8,10 @@ body{
 }
 
 .appTitle{
+    z-index: 1000;
     width: 100%;
     position: fixed;
+    top: -1px;
     transform: translateZ(0);
     display: flex;
     flex-direction: column;
@@ -21,7 +23,6 @@ body{
     margin: 0 auto;
     padding: 0.5rem 0;
     width: 45px;
-    /* display: none; */
 }
 
 .homePage{
@@ -29,6 +30,7 @@ body{
     padding-top: 4.5rem;
     display: grid;
     padding-bottom: 4.5rem;
+    transition: all 0.35s ease-out;
 }
 
 .fileList{
@@ -65,7 +67,8 @@ footer{
     background-color: hsla(180deg, 0%, 92%, 1.0);
     box-shadow: 1px 1px 20px hsla(180deg, 0%, 0%, 0.2);
     position: fixed;
-    bottom: 0;
+    bottom: -1px;
+    transition: all 0.25s ease-out;
 }
 
 .footerHide{
@@ -80,7 +83,7 @@ footer{
     padding-left: 6vw;
     font-size: 1.3rem;
     color: #A52F38;
-    /* transform: scale(1) rotate(0deg) translateY(0%) translateX(0%); */
+    transition: all 0.25s ease-in;
 }
 
 .arrowUpHide{
@@ -89,6 +92,7 @@ footer{
 }
 
 .arrowDown{
+    z-index: 900;
     color: #A52F38;
     z-index: 200;
     position: absolute;
@@ -97,6 +101,7 @@ footer{
 }
 
 .arrowDownShow{
+    z-index: 900;
     transform: scale(1.4) rotate(180deg) translateX(-3vw) translateY(-1.5vh);
     transition: all 0.35s ease-out;
 }
@@ -128,7 +133,7 @@ footer{
 
 .hide{
     position: fixed;
-    transform: translateY(80%);
+    transform: translateY(-125%);
     transition: all 0.35s ease-out;
 }
 
@@ -139,12 +144,14 @@ footer{
 
 
 .playPage{
+    z-index: 200;
     position: fixed;
     transform: translateY(100%);
-    transition: all 0.35 ease-out;
+    transition: all 0.35s ease-in;
 }
 
 .playPageUp{
+    z-index: 200;
     position: fixed;
     transform: translateY(0%);
     transition: all 0.35s ease-out;
@@ -173,6 +180,7 @@ footer{
     /* filter function is refered in MDN, https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur */
     opacity: 0.9;
     width: 150%;
+    transition: all 0.25s ease-out;
 }
 
 .playCoverBkgBlur{
@@ -186,7 +194,7 @@ footer{
     box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0);
     opacity: 0.7;
     transform: scale(0.8);
-    transition: all 0.85s ease-out;
+    transition: all 0.25s ease-out;
 }
 
 .PCShow{
@@ -204,6 +212,7 @@ footer{
     font-size: 1.2rem;
     margin-top: 2vh;
     filter: blur(0.3rem);
+    transition: all 0.25s ease-out;
 }
 
 .playInfoShow{
@@ -252,6 +261,7 @@ footer{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    transition: all 0.5s ease-out;
 }
 
 .controlBarShow{
