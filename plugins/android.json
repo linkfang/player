@@ -12,6 +12,9 @@
     },
     "cordova-plugin-media": {
       "PACKAGE_NAME": "ca.edumedia.fang0055.playr"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "ca.edumedia.fang0055.playr"
     }
   },
   "dependent_plugins": {
