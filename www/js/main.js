@@ -91,6 +91,7 @@ let app = {
             }
             });
         }, 100);
+        app.ready();
         document.querySelector(".playCtn").addEventListener("click", app.playOrPause);
         document.querySelector(".arrowUp").addEventListener("click", app.showPlay);
         document.querySelector(".arrowDown").addEventListener("click", app.hidePlay);
@@ -122,9 +123,9 @@ let app = {
     },
 
     playOrPause: function(){
-        if(!app.media){
-            app.ready();
-        } 
+        // if(!app.media){
+        //     app.ready();
+        // } 
         if(document.querySelector(".fa-play")){
             vol = parseFloat(app.volume);
             app.media.setVolume(vol);
@@ -238,7 +239,7 @@ let app = {
         }
         document.querySelector(".playBtn").classList.add("fa-play");
         document.querySelector(".playBtn").classList.remove("fa-pause");
-        app.ready();
+        // app.ready();
         app.playOrPause();
         app.showPlay();
     },
@@ -352,7 +353,7 @@ let app = {
     }
 }
 
-if (document.deviceready) {
+if ('cordova' in window) {
     document.addEventListener("deviceready", app.init);
 } else {
     document.addEventListener("DOMContentLoaded", app.init);
