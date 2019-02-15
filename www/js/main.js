@@ -80,6 +80,17 @@ let app = {
     init: function () {
         app.createHomePage();
         app.randomAddDetails();
+        setInterval(() => {
+            console.log(app.media);
+            app.media.getCurrentPosition((pos)=>{
+            let duration = app.media.getDuration();
+            let percentage = pos/duration;
+            document.querySelector(".playedBar").style.width = (percentage*100) + "%";
+            if (pos < 0){
+                app.nextSong();
+            }
+            });
+        }, 100);
         document.querySelector(".playCtn").addEventListener("click", app.playOrPause);
         document.querySelector(".arrowUp").addEventListener("click", app.showPlay);
         document.querySelector(".arrowDown").addEventListener("click", app.hidePlay);
@@ -113,23 +124,18 @@ let app = {
     playOrPause: function(){
         if(!app.media){
             app.ready();
-        }
+        } 
         if(document.querySelector(".fa-play")){
-            vol = parseInt(app.volume);
+            vol = parseFloat(app.volume);
             app.media.setVolume(vol);
             app.media.play();
+            document.querySelector(".playCover").classList.add("PCBreathing");
             app.showPlay();
         } else{
             app.media.pause();
+            document.querySelector(".playCover").classList.remove("PCBreathing");
         } 
         app.togglePlayAndPause();
-        // setInterval(() => {
-        //     let currentPosition = app.media.getCurrentPosition();
-        //     console.log(currentPosition);
-        //     if (currentPosition < 0){
-        //         app.nextSong();
-        //     }
-        // }, 250);
     },
 
     showPlay: function () {
@@ -243,6 +249,7 @@ let app = {
     },
 
     switchSongInfo: function () {
+        document.querySelector(".playCover").classList.remove("PCBreathing");
         document.querySelector(".playCover").classList.remove("PCShow");
         document.querySelector(".playCoverBkg").classList.remove("playCoverBkgBlur");
         document.querySelector(".playCtn").classList.remove("PPPlayCtn");
@@ -254,18 +261,18 @@ let app = {
         document.querySelector(".playCoverBkg").classList.add("playCoverBkgBlur");
         document.querySelector(".playCtn").classList.add("PPPlayCtn");
         document.querySelector(".playInfo").classList.add("playInfoShow");
+        setTimeout(()=>{
+            document.querySelector(".playCover").classList.add("PCBreathing");
+        }, 850);
     },
 
     controlBar: function(ev){
-        console.log("Are you there>>>>>>???");
         let duration = app.media.getDuration();
-        let playedLength = ev.offsetX;
+        let playedLength = ev.offsetX; // offsetX related here: https://blog.csdn.net/weinideai/article/details/3885444 
         let fullLength = ev.currentTarget.offsetWidth;
         let percentage = playedLength/fullLength;
-        console.log(percentage + "%");
         document.querySelector(".playedBar").style.width = (percentage*100) + "%";
         let seekPercentage = duration * percentage;
-        console.log(seekPercentage);
         app.media.seekTo(seekPercentage * 1000);
     },
 

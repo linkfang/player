@@ -224,10 +224,30 @@ footer{
 }
 
 .PCShow{
-    box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0.6);
+    box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0.65);
     opacity: 1;
     transform: scale(1);
     transition: all 0.85s ease-out;
+}
+
+.PCBreathing{
+    transition: all 0.85s ease-out;
+    animation: breathing 4s infinite linear;
+}
+
+@keyframes breathing{
+    0%{
+        box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0.7);
+        transform: scale(1);
+    }
+    65%{
+        box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0.15);
+        transform: scale(0.99);
+    }
+    100%{
+        box-shadow: 2px 4px 20px hsla(180deg, 0%, 0%, 0.7);
+        transform: scale(1);
+    }
 }
 
 .playInfo{
@@ -273,7 +293,7 @@ footer{
 
 .playedBar{
     margin-top: 2.5vh;
-    width: 20%;
+    width: 0%;
     height: 3px;
     background-color: #A52F38;
 }
