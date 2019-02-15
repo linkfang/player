@@ -53,10 +53,12 @@ let app = {
             id: 8,
             title: "Stay Together",
             artist: "Noah Cyrus",
-            file: "file:///android_asset/www/media/There_For_You-Martin_Garrix.mp3",
+            file: "file:///android_asset/www/media/Stay_Together-Noah_Cyrus.mp3",
             img: "img/Stay Together.png"
         }
     ],
+
+    volume: 0.8,
 
     media: null,
 
@@ -78,14 +80,14 @@ let app = {
     init: function () {
         app.createHomePage();
         app.randomAddDetails();
-        document.querySelector(".playCtn").addEventListener("click", app.showPlay);
-        document.querySelector(".playCtn").addEventListener("click", app.play);
+        document.querySelector(".playCtn").addEventListener("click", app.playOrPause);
         document.querySelector(".arrowUp").addEventListener("click", app.showPlay);
         document.querySelector(".arrowDown").addEventListener("click", app.hidePlay);
         document.querySelector(".nextSong").addEventListener("click", app.nextSong);
         document.querySelector(".lastSong").addEventListener("click", app.lastSong);
-        document.querySelector(".playCtn").addEventListener("click", app.togglePlayAndPause);
-        app.ready();
+        document.querySelector(".fa-volume-up").addEventListener("click", app.volumeUp);
+        document.querySelector(".fa-volume-down").addEventListener("click", app.volumeDown);
+        document.querySelector(".bar").addEventListener("click", app.controlBar);
     },
 
     ready: function(){
@@ -93,7 +95,6 @@ let app = {
         let i = app.appData.findIndex( item => item.id == songId);
         let src = app.appData[i].file;
         console.log(src);
-        // app.media = new Media(src, app.scf, app.ecf, app.statusChange);
         app.media = new Media(src, app.scf, app.ecf);
     },
 
@@ -102,15 +103,33 @@ let app = {
     },
 
     ecf: function(err){
-        console.error("err");
+        console.error(err);
     },
 
     statusChange: function (status){
         console.log("Status is now " + app.status[status] );
     },
 
-    play: function(){
-        app.media.play();
+    playOrPause: function(){
+        if(!app.media){
+            app.ready();
+        }
+        if(document.querySelector(".fa-play")){
+            vol = parseInt(app.volume);
+            app.media.setVolume(vol);
+            app.media.play();
+            app.showPlay();
+        } else{
+            app.media.pause();
+        } 
+        app.togglePlayAndPause();
+        // setInterval(() => {
+        //     let currentPosition = app.media.getCurrentPosition();
+        //     console.log(currentPosition);
+        //     if (currentPosition < 0){
+        //         app.nextSong();
+        //     }
+        // }, 250);
     },
 
     showPlay: function () {
@@ -162,8 +181,6 @@ let app = {
             let songTitle = document.createElement("i");
             let songArtist = document.createElement("i");
 
-            console.log("Helllllllloooo??????");
-
             fileList.setAttribute("data-id", item.id);
             albumCover.src = item.img;
             albumCover.setAttribute("alt", "Album Cover");
@@ -199,7 +216,7 @@ let app = {
     },
 
     addDetails: function (ev) {
-        let songId = ev.currentTarget.getAttribute("data-id");
+        let songId = ev .currentTarget.getAttribute("data-id");
         let i = app.appData.findIndex(item => item.id == songId);
 
         document.querySelector(".playInfo").setAttribute("data-id", songId);
@@ -208,7 +225,15 @@ let app = {
         document.querySelector(".playSongTitle").textContent = app.appData[i].title;
         document.querySelector(".playSongArtist").textContent = app.appData[i].artist;
         document.querySelector(".footTitle").textContent = app.appData[i].title;
-
+        
+        if(app.media){
+            app.media.stop();
+            app.media.release();
+        }
+        document.querySelector(".playBtn").classList.add("fa-play");
+        document.querySelector(".playBtn").classList.remove("fa-pause");
+        app.ready();
+        app.playOrPause();
         app.showPlay();
     },
 
@@ -231,18 +256,35 @@ let app = {
         document.querySelector(".playInfo").classList.add("playInfoShow");
     },
 
+    controlBar: function(ev){
+        console.log("Are you there>>>>>>???");
+        let duration = app.media.getDuration();
+        let playedLength = ev.offsetX;
+        let fullLength = ev.currentTarget.offsetWidth;
+        let percentage = playedLength/fullLength;
+        console.log(percentage + "%");
+        document.querySelector(".playedBar").style.width = (percentage*100) + "%";
+        let seekPercentage = duration * percentage;
+        console.log(seekPercentage);
+        app.media.seekTo(seekPercentage * 1000);
+    },
+
     nextSong: function () {
         app.switchSongInfo();
+        document.querySelector(".playBtn").classList.remove("fa-play");
+        document.querySelector(".playBtn").classList.add("fa-pause");
+        app.media.stop();
+        app.media.release();
+
+        let songId = document.querySelector(".playInfo").getAttribute("data-id");
+        let i = app.appData.findIndex(item => item.id == songId) + 1;
+        if (i == app.appData.length) {
+            i = 0;
+        }
+        songId = app.appData[i].id;
+        document.querySelector(".playInfo").setAttribute("data-id", songId);
 
         setTimeout(() => {
-            let songId = document.querySelector(".playInfo").getAttribute("data-id");
-            let i = app.appData.findIndex(item => item.id == songId) + 1;
-            if (i == app.appData.length) {
-                i = 0;
-            }
-
-            songId = app.appData[i].id;
-            document.querySelector(".playInfo").setAttribute("data-id", songId);
             document.querySelector(".playCoverBkg").src = app.appData[i].img;
             document.querySelector(".playCover").src = app.appData[i].img;
             document.querySelector(".playSongTitle").textContent = app.appData[i].title;
@@ -250,22 +292,27 @@ let app = {
             document.querySelector(".footTitle").textContent = app.appData[i].title;
         }, 250);
 
-
+        app.ready();
+        app.media.play();
         setTimeout(app.switchSongInfoShow, 250);
     },
 
     lastSong: function () {
         app.switchSongInfo();
+        document.querySelector(".playBtn").classList.remove("fa-play");
+        document.querySelector(".playBtn").classList.add("fa-pause");
+        app.media.stop();
+        app.media.release();
+
+        let songId = document.querySelector(".playInfo").getAttribute("data-id");
+        let i = app.appData.findIndex(item => item.id == songId) - 1;
+        if (i == -1) {
+            i = app.appData.length - 1;
+        }
+        songId = app.appData[i].id;
+        document.querySelector(".playInfo").setAttribute("data-id", songId);
 
         setTimeout(() => {
-            let songId = document.querySelector(".playInfo").getAttribute("data-id");
-            let i = app.appData.findIndex(item => item.id == songId) - 1;
-            if (i == -1) {
-                i = app.appData.length - 1;
-            }
-
-            songId = app.appData[i].id;
-            document.querySelector(".playInfo").setAttribute("data-id", songId);
             document.querySelector(".playCoverBkg").src = app.appData[i].img;
             document.querySelector(".playCover").src = app.appData[i].img;
             document.querySelector(".playSongTitle").textContent = app.appData[i].title;
@@ -273,14 +320,35 @@ let app = {
             document.querySelector(".footTitle").textContent = app.appData[i].title;
         }, 250);
 
+        app.ready();
+        app.media.play();
         setTimeout(app.switchSongInfoShow, 250);
+    },  
+    volumeUp: function(){
+        vol = app.volume;
+        vol += 0.1;
+        if(vol > 1){
+            vol = 1.0;
+        }
+        app.media.setVolume(vol);
+        app.volume = vol;
+    },
+
+    volumeDown: function(){
+        vol = app.volume;
+        vol -= 0.1;
+        if(vol < 0){
+            vol = 0;
+        }
+        app.media.setVolume(vol);
+        app.volume = vol;
     }
 }
-
-
 
 if (document.deviceready) {
     document.addEventListener("deviceready", app.init);
 } else {
     document.addEventListener("DOMContentLoaded", app.init);
 }
+
+

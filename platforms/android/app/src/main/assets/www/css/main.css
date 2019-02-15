@@ -256,25 +256,49 @@ footer{
     color: hsla(180deg, 0%, 65%, 1.0);
 }
 
-.barCtn{
+/* .barCtn{
     display: flex;
     flex-direction: row;
     justify-content: center;
     margin-top: 2.5vh;
-}
+} */
 
 .bar{
+    margin: 0 auto;
+    margin-top: 2.5vh;
     height: 3px;
     width: 76vw;
     background-color:hsla(180deg, 0%, 85%, 1.0);
-    
 }
 
 .playedBar{
+    margin-top: 2.5vh;
     width: 20%;
     height: 3px;
     background-color: #A52F38;
 }
+
+/* .playBar{
+    width: 76vw;
+    height: 3px;
+    -webkit-appearance: none;
+} 
+
+input[type='range']::-webkit-slider-runnable-track{  
+    background-color:hsla(180deg, 0%, 85%, 1.0);
+    height: 3px;
+    border-radius: 50px;
+}
+
+input[type='range']::-webkit-slider-thumb {  
+    -webkit-appearance: none;
+    border: 5px solid #A52F38;
+    height: 14px;
+    width: 14px;
+    border-radius: 8px;
+    background: #A52F38;
+    cursor: pointer;
+} */
 
 .controlBar{
     color: #A52F38;
