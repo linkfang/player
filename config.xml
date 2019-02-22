@@ -8,6 +8,7 @@
         Link Zhou Fang
     </author>
     <content src="index.html" />
+    <preference name="loadUrlTimeoutValue" value="700000" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

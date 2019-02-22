@@ -77,21 +77,22 @@ let app = {
         '4': 'MEDIA_ERR_NONE_SUPPORTED'
     },
 
+    playTime: 0,
+
     init: function () {
         app.createHomePage();
         app.randomAddDetails();
+        app.ready();
         setInterval(() => {
-            console.log(app.media);
             app.media.getCurrentPosition((pos)=>{
             let duration = app.media.getDuration();
             let percentage = pos/duration;
             document.querySelector(".playedBar").style.width = (percentage*100) + "%";
-            if (pos < 0){
+            if (pos < 0 && app.playTime > 0){
                 app.nextSong();
             }
             });
         }, 100);
-        app.ready();
         document.querySelector(".playCtn").addEventListener("click", app.playOrPause);
         document.querySelector(".arrowUp").addEventListener("click", app.showPlay);
         document.querySelector(".arrowDown").addEventListener("click", app.hidePlay);
@@ -100,13 +101,21 @@ let app = {
         document.querySelector(".fa-volume-up").addEventListener("click", app.volumeUp);
         document.querySelector(".fa-volume-down").addEventListener("click", app.volumeDown);
         document.querySelector(".bar").addEventListener("click", app.controlBar);
+        document.addEventListener("pause", () => {
+            // app.media.release();
+            // console.log('Hi');
+        });
+        document.addEventListener("resume", () => {
+            // app.ready();
+            // console.log('after set a new media' + src);
+        })
     },
 
     ready: function(){
         let songId = document.querySelector(".playInfo").getAttribute("data-id");
         let i = app.appData.findIndex( item => item.id == songId);
         let src = app.appData[i].file;
-        console.log(src);
+        // console.log(src);
         app.media = new Media(src, app.scf, app.ecf);
     },
 
@@ -123,12 +132,10 @@ let app = {
     },
 
     playOrPause: function(){
-        // if(!app.media){
-        //     app.ready();
-        // } 
         if(document.querySelector(".fa-play")){
             vol = parseFloat(app.volume);
             app.media.setVolume(vol);
+            app.playTime++;
             app.media.play();
             document.querySelector(".playCover").classList.add("PCBreathing");
             app.showPlay();
@@ -160,24 +167,23 @@ let app = {
     },
 
     hidePlay: function () {
-        document.querySelector(".homePage").classList.remove("hide");
-        document.querySelector(".appTitle").classList.remove("hide");
-        document.querySelector(".footer").classList.remove("footerHide");
         document.querySelector(".playPage").classList.remove("playPageUp");
         document.querySelector(".playCover").classList.remove("PCShow");
         document.querySelector(".playCoverBkg").classList.remove("playCoverBkgBlur");
         document.querySelector(".playCtn").classList.remove("PPPlayCtn");
         document.querySelector(".playInfo").classList.remove("playInfoShow");
+        document.querySelector(".footer").classList.remove("footerHide");
         document.querySelector(".lastSong").classList.add("disapear");
         document.querySelector(".nextSong").classList.add("disapear");
         document.querySelector(".arrowUp").classList.remove("arrowUpHide");
         document.querySelector(".controlBar").classList.remove("controlBarShow");
-
-        setTimeout(() => {
-            document.querySelector(".arrowDown").classList.remove("arrowDownShow");
-            document.querySelector(".fa-volume-up").classList.remove("volumeUpShow");
-            document.querySelector(".fa-volume-down").classList.remove("volumeDownShow");
-        }, 750);
+        document.querySelector(".arrowDown").classList.remove("arrowDownShow");
+        document.querySelector(".fa-volume-up").classList.remove("volumeUpShow");
+        document.querySelector(".fa-volume-down").classList.remove("volumeDownShow");
+        setTimeout( ()=> {
+            document.querySelector(".homePage").classList.remove("hide");
+            document.querySelector(".appTitle").classList.remove("hide");
+        }, 250);
     },
 
     createHomePage: function () {
@@ -232,14 +238,13 @@ let app = {
         document.querySelector(".playSongTitle").textContent = app.appData[i].title;
         document.querySelector(".playSongArtist").textContent = app.appData[i].artist;
         document.querySelector(".footTitle").textContent = app.appData[i].title;
-        
-        if(app.media){
+        if(app.playTime){
             app.media.stop();
             app.media.release();
         }
         document.querySelector(".playBtn").classList.add("fa-play");
         document.querySelector(".playBtn").classList.remove("fa-pause");
-        // app.ready();
+        app.ready();
         app.playOrPause();
         app.showPlay();
     },
@@ -301,6 +306,7 @@ let app = {
         }, 250);
 
         app.ready();
+        app.playTime++;
         app.media.play();
         setTimeout(app.switchSongInfoShow, 250);
     },
@@ -329,6 +335,7 @@ let app = {
         }, 250);
 
         app.ready();
+        app.playTime++;
         app.media.play();
         setTimeout(app.switchSongInfoShow, 250);
     },  
@@ -355,7 +362,8 @@ let app = {
 
 if ('cordova' in window) {
     document.addEventListener("deviceready", app.init);
-} else {
+} 
+else {
     document.addEventListener("DOMContentLoaded", app.init);
 }
 
