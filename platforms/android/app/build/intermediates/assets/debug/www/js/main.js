@@ -78,12 +78,12 @@ let app = {
     },
 
     playTime: 0,
-
+    timmer: null,
     init: function () {
         app.createHomePage();
         app.randomAddDetails();
         app.ready();
-        setInterval(() => {
+        app.timmer = setInterval(() => {
             app.media.getCurrentPosition((pos)=>{
             let duration = app.media.getDuration();
             let percentage = pos/duration;
@@ -102,11 +102,25 @@ let app = {
         document.querySelector(".fa-volume-down").addEventListener("click", app.volumeDown);
         document.querySelector(".bar").addEventListener("click", app.controlBar);
         document.addEventListener("pause", () => {
-            // app.media.release();
+            clearInterval(app.timmer);
+            document.querySelector(".playBtn").classList.add("fa-play");
+            document.querySelector(".playBtn").classList.remove("fa-pause");
+            app.media.release();
             // console.log('Hi');
         });
         document.addEventListener("resume", () => {
-            // app.ready();
+            app.ready();
+            app.playTime = 0;
+            app.timmer = setInterval(() => {
+                app.media.getCurrentPosition((pos)=>{
+                let duration = app.media.getDuration();
+                let percentage = pos/duration;
+                document.querySelector(".playedBar").style.width = (percentage*100) + "%";
+                if (pos < 0 && app.playTime > 0){
+                    app.nextSong();
+                }
+                });
+            }, 100);
             // console.log('after set a new media' + src);
         })
     },
@@ -183,7 +197,7 @@ let app = {
         setTimeout( ()=> {
             document.querySelector(".homePage").classList.remove("hide");
             document.querySelector(".appTitle").classList.remove("hide");
-        }, 250);
+        }, 275);
     },
 
     createHomePage: function () {
