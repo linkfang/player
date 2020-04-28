@@ -1,5 +1,5 @@
 # Player
-This app is developed with Cordova with elegant UI design and animations.
+This app is developed using Cordova with elegant UI design and animations.
 
 The main features:
 
